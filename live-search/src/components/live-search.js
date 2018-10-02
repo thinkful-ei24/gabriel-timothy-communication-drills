@@ -4,46 +4,73 @@ import SearchForm from './search-form';
 import CharacterCount from './character-count';
 import CharacterList from './character-list';
 
+
 export default class LiveSearch extends React.Component {
-  constructor(props) {
+  constructor(props){
     super(props);
 
     this.state = {
       searchTerm: '',
-      characters: [...props.characters]
-    };
+    }
   }
 
-  updateCharactersState(searchTerm) {
-    console.log(searchTerm);
-    const filteredCharacters = this.props.characters.filter(character => {
-      if (character.name.toLowerCase().includes(searchTerm)) {
-        return true;
-      }
-      return false;
-    });
-    console.log(filteredCharacters);
-    this.setState({ characters: filteredCharacters });
+  updateSearchTerm(term){
+    this.setState({ searchTerm: term });
   }
 
-  updateSearchTerm(searchTerm) {
-    this.setState({ searchTerm }, () => {
-      this.updateCharactersState(this.state.searchTerm);
-    });
-  }
-
-  render() {
-    return (
-      <div className="live-search">
+  render(){
+    const characterList = this.props.characters.filter(character => character.name.toLowerCase().includes(this.state.searchTerm));
+     
+     return (<div className="live-search">
         <SearchForm updateSearchTerm={term => this.updateSearchTerm(term)} />
-
-        <CharacterCount count={this.state.characters.length} />
-
-        <CharacterList characters={this.state.characters} />
+        <CharacterCount count={characterList.length} />
+        <CharacterList characters={characterList} />
       </div>
-    );
+     );
   }
+
 }
+
+// export default class LiveSearch extends React.Component {
+//   constructor(props) {
+//     super(props);
+
+//     this.state = {
+//       searchTerm: '',
+//       characters: [...props.characters]
+//     };
+//   }
+
+//   updateCharactersState(searchTerm) {
+//     console.log(searchTerm);
+//     const filteredCharacters = this.props.characters.filter(character => {
+//       if (character.name.toLowerCase().includes(searchTerm)) {
+//         return true;
+//       }
+//       return false;
+//     });
+//     console.log(filteredCharacters);
+//     this.setState({ characters: filteredCharacters });
+//   }
+
+//   updateSearchTerm(searchTerm) {
+//     this.setState({ searchTerm }, () => {
+//       this.updateCharactersState(this.state.searchTerm);
+//     });
+//   }
+
+//   render() {
+//     return (
+//       <div className="live-search">
+//         <SearchForm updateSearchTerm={term => this.updateSearchTerm(term)} />
+
+//         <CharacterCount count={this.state.characters.length} />
+
+//         <CharacterList characters={this.state.characters} />
+//       </div>
+//     );
+//   }
+// }
 
 /*
 1. Characters is passed in from props and then loaded into the state
